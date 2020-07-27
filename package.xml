@@ -11,5 +11,12 @@
   <depend>roscpp</depend>
   <depend>eigen</depend>
   <depend>moveit_ros_planning_interface</depend>
+  <depend>geometry_msgs</depend>
+  <depend>actionlib</depend>
+  <depend>tf</depend>
+  <depend>tf_conversions</depend>
   <depend>rcom_impl</depend>
+  <depend>rcom_msgs</depend>
+
+  <exec_depend>h_vs</exec_depend>
 </package>
