@@ -27,6 +27,10 @@ class HRCoMVSActionServer : BaseRCoMActionServer {
 
         // Compute error between current and desired values via forward kinematics
         virtual Eigen::VectorXd _computeTaskForwardKinematics(std::vector<double>& q) override;
+
+        // Transform the task from camera to world frame
+        virtual Eigen::VectorXd _transformTask(Eigen::VectorXd& td) override;
+
 };
 
 
@@ -54,11 +58,7 @@ Eigen::MatrixXd HRCoMVSActionServer::_computeTaskJacobian(moveit::core::RobotSta
         Jt
     );
 
-    // Rotates velocity from camera frame to world frame
-    Jt.topRows(3)    = Jt.topRows(3)*robot_state->getGlobalLinkTransform(_link_pip1).rotation();
-    Jt.bottomRows(3) = Jt.bottomRows(3)*robot_state->getGlobalLinkTransform(_link_pip1).rotation();
-
-    return Jt;
+    return Jt.topRows(4);
 };
 
 
@@ -77,10 +77,24 @@ Eigen::VectorXd HRCoMVSActionServer::_computeTaskForwardKinematics(std::vector<d
     double r, p, y;
     rot.getRPY(r, p, y);
 
-    Eigen::VectorXd t(6); 
-    t << robot_state.getGlobalLinkTransform(_link_pip1).translation(), r, p, y;
+    Eigen::VectorXd t(4); 
+    t << robot_state.getGlobalLinkTransform(_link_pip1).translation(), r;
 
     return t;
 };
+
+
+Eigen::VectorXd HRCoMVSActionServer::_transformTask(Eigen::VectorXd& td) {
+
+    auto robot_state = _move_group.getCurrentState();
+
+    // Rotate task from camera frame to world frame
+    Eigen::MatrixXd R(6, 6);
+    R << robot_state->getGlobalLinkTransform(_link_pip1).rotation(), Eigen::Matrix3d::Zero(),
+        Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation();
+
+    td = R*td;
+    return td.topRows(4);
+}
 
 } // namespace rcom
