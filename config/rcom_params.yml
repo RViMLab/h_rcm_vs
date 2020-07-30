@@ -1,9 +1,9 @@
-action_server: 'RCoM_ActionServer'
+action_server: 'rcom/RCoM_ActionServer'
 control_client: 'PositionJointInterface_trajectory_controller/follow_joint_trajectory'
 planning_group: 'arm_endoscope'
 
 # gains
-kt: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+kt: [1.0, 1.0, 1.0, 1.0]
 krcm: 0.5
 lambda0: 0.5
 
@@ -26,7 +26,7 @@ t2_td: 0.01
 t2_p_trocar: 0.01
 
 # threshold scale
-t_td_scale: [1.0, 1.0, 1.0, 0.1, 0.1, 0.1]
+t_td_scale: [1.0, 1.0, 1.0, 0.1]
 
 # max number of iterations
-max_iter: 20
+max_iter: 10
