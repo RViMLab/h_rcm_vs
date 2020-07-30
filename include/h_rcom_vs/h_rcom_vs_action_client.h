@@ -16,7 +16,18 @@
 
 class HRCoMVSActionClient
 {
+public:
+
+    HRCoMVSActionClient(
+        ros::NodeHandle& nh, 
+        std::string& action_server, std::string& dtwist_topic, std::string& p_trocar_topic, 
+        double dt
+    );
+
+    ~HRCoMVSActionClient();
+
 private:
+
     ros::NodeHandle _nh;
 
     rcom_msgs::task _task;
@@ -34,13 +45,4 @@ private:
     void _dTwistCB(const geometry_msgs::TwistConstPtr& dtwist_msg);
     void _pTrocarCB(const geometry_msgs::PoseConstPtr& p_trocar_msg);
     void _timerCB(const ros::TimerEvent&);
-
-
-public:
-    HRCoMVSActionClient(
-        ros::NodeHandle& nh, 
-        std::string& action_server, std::string& dtwist_topic, std::string& p_trocar_topic, 
-        double dt
-    );
-    ~HRCoMVSActionClient();
 };
