@@ -19,4 +19,5 @@
   <depend>rcom_msgs</depend>
 
   <exec_depend>h_vs</exec_depend>
+  <exec_depend>lbr_endoscope_moveit</exec_depend>
 </package>

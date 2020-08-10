@@ -40,6 +40,9 @@ target_link_libraries(h_rcom_vs_client_node ${catkin_LIBRARIES} h_rcom_vs)
 add_executable(h_rcom_vs_server_node src/h_rcom_vs_server_node.cpp)
 target_link_libraries(h_rcom_vs_server_node ${catkin_LIBRARIES})
 
+add_executable(rcom_init_node src/rcom_init_node.cpp)
+target_link_libraries(rcom_init_node ${catkin_LIBRARIES})
+
 # Install
 install(
     TARGETS h_rcom_vs
@@ -52,6 +55,6 @@ install(
 )
 
 install(
-    TARGETS h_rcom_vs_client_node h_rcom_vs_server_node
+    TARGETS h_rcom_vs_client_node h_rcom_vs_server_node rcom_init_node
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

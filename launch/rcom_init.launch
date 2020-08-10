@@ -1,0 +1,22 @@
+<launch>
+
+    <group ns="lbr">
+        <!-- load params -->
+        <rosparam command="load" file="$(find rcom_impl)/config/params.yml"/>
+
+        <!-- launch action server 
+                - runs under action_server: 'rcom/RCoM_ActionServer', defined in config/params.yml @ rcom_impl package
+        -->
+        <node name="rcom_node" pkg="rcom_impl" type="rcom_node" output="screen"/>
+
+        <!-- launch action client node
+                - subscribes to camera/image_raw
+                - publishes to visual_servo/img0
+        -->
+        <node name="rcom_init_node" pkg="h_rcom_vs" type="rcom_init_node" output="screen">
+            <remap from="camera/image_raw" to="endoscope_camera/image_raw"/>
+        </node>
+
+    </group>
+
+</launch>
