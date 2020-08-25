@@ -18,7 +18,7 @@ catkin_make && source devel/setup.bash
 ```
 In 3 terminals, run
 ```shell
-roslaunch lbr_endoscope moveit_planning_execution.launch  # initializes robot
+roslaunch lbr_endoscope_moveit moveit_planning_execution.launch  # initializes robot
 ```
 ```shell
 roslaunch h_rcom_vs rvom_init.launch  # initializes random endoscope position
