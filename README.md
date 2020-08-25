@@ -29,3 +29,6 @@ roslaunch h_rcom_vs h_rcom_calibratino_pattern_vs.launch  # launches the visual 
 
 ### Deep Servos
 - different servos with h_gen_node.py, and flags
+
+### Known Limitations
+- There are some incompatabilities with Pyhton3, ROS, and OpenCV, see [stack overflow](https://stackoverflow.com/questions/49221565/unable-to-use-cv-bridge-with-ros-kinetic-and-python3). It can be solved by performing an extended sourcing.
