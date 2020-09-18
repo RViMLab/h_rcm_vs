@@ -13,7 +13,7 @@
 
         <!-- launch homography based visual servo node
                 - subscribes to visual_servo/G 
-                - publishes to visual_servo/dtwist
+                - publishes to visual_servo/twist
         -->
         <node name="h_vs_node" pkg="h_vs" type="h_vs_node" output="screen"/>
 
@@ -23,7 +23,7 @@
         <node name="h_rcom_vs_server_node" pkg="h_rcom_vs" type="h_rcom_vs_server_node" output="screen"/>
 
         <!-- launch action client node 
-                - subscribes to visual_servo/dtwist, rcom/p_trocar
+                - subscribes to visual_servo/twist, rcom/p_trocar
                 - requests rcom goals from action server under action_server: 'rcom/RCoM_ActionServer', defined in config/rcom_params.yml
         -->
         <node name="h_rcom_vs_client_node" pkg="h_rcom_vs" type="h_rcom_vs_client_node" output="screen"/>

@@ -2,14 +2,14 @@
 
 
 // Callbacks
-void HRCoMVSActionClient::_dTwistCB(const geometry_msgs::TwistConstPtr& dtwist_msg) {
+void HRCoMVSActionClient::_twistCB(const geometry_msgs::TwistConstPtr& twist_msg) {
     // Sets _task
-    _task.values[0] = dtwist_msg->linear.x;
-    _task.values[1] = dtwist_msg->linear.y;
-    _task.values[2] = dtwist_msg->linear.z;
-    _task.values[3] = dtwist_msg->angular.x;
-    _task.values[4] = dtwist_msg->angular.y;
-    _task.values[5] = dtwist_msg->angular.z;
+    _task.values[0] = twist_msg->linear.x;
+    _task.values[1] = twist_msg->linear.y;
+    _task.values[2] = twist_msg->linear.z;
+    _task.values[3] = twist_msg->angular.x;
+    _task.values[4] = twist_msg->angular.y;
+    _task.values[5] = twist_msg->angular.z;
 
     _task.is_velocity = true;
 }
@@ -37,11 +37,11 @@ void HRCoMVSActionClient::_timerCB(const ros::TimerEvent&) {
 
 
 // Constructor and destructor
-HRCoMVSActionClient::HRCoMVSActionClient(ros::NodeHandle& nh, std::string& action_server, std::string& dtwist_topic, std::string& p_trocar_topic, double dt) :
+HRCoMVSActionClient::HRCoMVSActionClient(ros::NodeHandle& nh, std::string& action_server, std::string& twist_topic, std::string& p_trocar_topic, double dt) :
     _nh(nh),
     _ac(action_server),
     _timer(nh.createTimer(ros::Duration(dt), &HRCoMVSActionClient::_timerCB, this)),
-    _dtwist_sub(nh.subscribe(dtwist_topic, 1, &HRCoMVSActionClient::_dTwistCB, this)),
+    _twist_sub(nh.subscribe(twist_topic, 1, &HRCoMVSActionClient::_twistCB, this)),
     _p_trocar_sub(nh.subscribe(p_trocar_topic, 1, &HRCoMVSActionClient::_pTrocarCB, this)) {
        
         // Initialize task
@@ -58,6 +58,6 @@ HRCoMVSActionClient::HRCoMVSActionClient(ros::NodeHandle& nh, std::string& actio
 HRCoMVSActionClient::~HRCoMVSActionClient() {
     _nh.shutdown();
     _ac.cancelAllGoals();
-    _dtwist_sub.shutdown();
+    _twist_sub.shutdown();
     _p_trocar_sub.shutdown();
 }

@@ -8,17 +8,17 @@ int main(int argc, char** argv) {
     auto spinner = ros::AsyncSpinner(2);
     spinner.start();
 
-    std::string action_server, dtwist_topic, p_trocar_topic;
+    std::string action_server, twist_topic, p_trocar_topic;
     double dt;
 
     nh.getParam("action_server", action_server);
-    dtwist_topic = "visual_servo/dtwist";
+    twist_topic = "visual_servo/twist";
     p_trocar_topic = "rcom/p_trocar";
     nh.getParam("dt", dt);
 
     HRCoMVSActionClient h_rcom_vs_ac(
         nh,
-        action_server, dtwist_topic, p_trocar_topic,
+        action_server, twist_topic, p_trocar_topic,
         dt
     );
 

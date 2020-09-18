@@ -20,7 +20,7 @@ public:
 
     HRCoMVSActionClient(
         ros::NodeHandle& nh, 
-        std::string& action_server, std::string& dtwist_topic, std::string& p_trocar_topic, 
+        std::string& action_server, std::string& twist_topic, std::string& p_trocar_topic, 
         double dt
     );
 
@@ -38,11 +38,11 @@ private:
     ros::Timer _timer;
 
     // Subscribers
-    ros::Subscriber _dtwist_sub;
+    ros::Subscriber _twist_sub;
     ros::Subscriber _p_trocar_sub;
 
     // Callbacks
-    void _dTwistCB(const geometry_msgs::TwistConstPtr& dtwist_msg);
+    void _twistCB(const geometry_msgs::TwistConstPtr& twist_msg);
     void _pTrocarCB(const geometry_msgs::PoseConstPtr& p_trocar_msg);
     void _timerCB(const ros::TimerEvent&);
 };
