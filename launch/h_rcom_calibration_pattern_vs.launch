@@ -12,7 +12,7 @@
                 - publishes to visual_servo/G 
         -->
         <node name="h_gen_node" pkg="h_vs" type="h_gen_calibration_pattern_node.py" output="screen">
-            <remap from="camera/image_raw" to="endoscope_camera/image_raw"/>
+            <remap from="camera/image_raw" to="da_vinci_endoscope_camera/image_raw"/>
         </node>
 
         <!-- launch homography based visual servo node
