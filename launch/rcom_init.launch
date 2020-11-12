@@ -14,7 +14,7 @@
                 - publishes to visual_servo/img0
         -->
         <node name="rcom_init_node" pkg="h_rcom_vs" type="rcom_init_node" output="screen">
-            <remap from="camera/image_raw" to="da_vinci_endoscope_camera/image_raw"/>
+            <remap from="camera/image_raw" to="storz_endoscope_camera/image_raw"/>
         </node>
 
     </group>
