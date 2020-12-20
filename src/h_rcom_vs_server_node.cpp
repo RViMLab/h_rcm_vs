@@ -15,8 +15,8 @@ int main(int argc, char** argv) {
 
     // Parameters
     std::string action_server, control_client;
-    std::vector<double> kt;
-    double krcm, lambda0, dt;
+    std::vector<double> kt, krcm;
+    double lambda0, dt;
     std::string planning_group;
     double alpha;
     std::string link_pi, link_pip1;

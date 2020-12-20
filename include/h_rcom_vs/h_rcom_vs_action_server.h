@@ -15,7 +15,7 @@ class HRCoMVSActionServer : BaseRCoMActionServer {
 
         HRCoMVSActionServer(      
             ros::NodeHandle nh, std::string action_server, std::string control_client, 
-            std::vector<double> kt, double krcm, double lambda0, double dt, 
+            std::vector<double> kt, std::vector<double> krcm, double lambda0, double dt, 
             std::string planning_group, double alpha, std::string link_pi, std::string link_pip1,
             double t1_td, double t1_p_trocar, double t2_td, double t2_p_trocar, std::vector<double> t_td_scale, int max_iter
         );
@@ -36,7 +36,7 @@ class HRCoMVSActionServer : BaseRCoMActionServer {
 
 HRCoMVSActionServer::HRCoMVSActionServer(
     ros::NodeHandle nh, std::string action_server, std::string control_client, 
-    std::vector<double> kt, double krcm, double lambda0, double dt, 
+    std::vector<double> kt, std::vector<double> krcm, double lambda0, double dt, 
     std::string planning_group, double alpha, std::string link_pi, std::string link_pip1,
     double t1_td, double t1_p_trocar, double t2_td, double t2_p_trocar, std::vector<double> t_td_scale, int max_iter
 ) : BaseRCoMActionServer(

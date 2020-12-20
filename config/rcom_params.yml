@@ -4,7 +4,7 @@ planning_group: 'arm_endoscope'
 
 # gains
 kt: [2.0, 2.0, 4.0, 2.0]
-krcm: 1.0
+krcm: [1.0, 1.0, 1.0]
 lambda0: 0.5
 
 # control interval
