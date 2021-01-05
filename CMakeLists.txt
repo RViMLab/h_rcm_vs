@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Eigen3 REQUIRED)
 
 catkin_package(
-    CATKIN_DEPENDS roscpp moveit_ros_planning_interface geometry_msgs actionlib tf tf_conversions rcom_impl rcom_msgs
+    CATKIN_DEPENDS roscpp cv_bridge image_transport image_geometry moveit_ros_planning_interface geometry_msgs actionlib tf tf_conversions rcom_impl rcom_msgs
     INCLUDE_DIRS include ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS}
     DEPENDS EIGEN3
 )
@@ -43,6 +43,9 @@ target_link_libraries(h_rcom_vs_server_node ${catkin_LIBRARIES})
 add_executable(rcom_init_node src/rcom_init_node.cpp)
 target_link_libraries(rcom_init_node ${catkin_LIBRARIES})
 
+add_executable(undistort_image_node src/undistort_image_node.cpp)
+target_link_libraries(undistort_image_node ${catkin_LIBRARIES})
+
 # Install
 install(
     TARGETS h_rcom_vs
@@ -55,6 +58,6 @@ install(
 )
 
 install(
-    TARGETS h_rcom_vs_client_node h_rcom_vs_server_node rcom_init_node
+    TARGETS h_rcom_vs_client_node h_rcom_vs_server_node rcom_init_node undistort_image_node
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
