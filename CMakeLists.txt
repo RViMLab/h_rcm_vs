@@ -4,6 +4,9 @@ project(h_rcom_vs)
 # Catkin packages
 find_package(catkin REQUIRED COMPONENTS
     roscpp
+    cv_bridge 
+    image_transport 
+    image_geometry
     moveit_ros_planning_interface
     geometry_msgs
     actionlib
@@ -34,6 +37,9 @@ add_library(h_rcom_vs src/h_rcom_vs_action_client.cpp)
 target_link_libraries(h_rcom_vs ${catkin_LIBRARIES})
 
 # Executable
+add_executable(crop_undistort_image_node src/crop_undistort_image_node.cpp)
+target_link_libraries(crop_undistort_image_node ${catkin_LIBRARIES})
+
 add_executable(h_rcom_vs_client_node src/h_rcom_vs_client_node.cpp)
 target_link_libraries(h_rcom_vs_client_node ${catkin_LIBRARIES} h_rcom_vs)
 
@@ -42,9 +48,6 @@ target_link_libraries(h_rcom_vs_server_node ${catkin_LIBRARIES})
 
 add_executable(rcom_init_node src/rcom_init_node.cpp)
 target_link_libraries(rcom_init_node ${catkin_LIBRARIES})
-
-add_executable(undistort_image_node src/undistort_image_node.cpp)
-target_link_libraries(undistort_image_node ${catkin_LIBRARIES})
 
 # Install
 install(
@@ -58,6 +61,6 @@ install(
 )
 
 install(
-    TARGETS h_rcom_vs_client_node h_rcom_vs_server_node rcom_init_node undistort_image_node
+    TARGETS h_rcom_vs_client_node h_rcom_vs_server_node rcom_init_node crop_undistort_image_node
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
