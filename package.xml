@@ -18,6 +18,9 @@
   <depend>rcom_impl</depend>
   <depend>rcom_msgs</depend>
 
+  <exec_depend>nodelet</exec_depend>
+  <exec_depend>image_proc</exec_depend>
   <exec_depend>h_vs</exec_depend>
   <exec_depend>lbr_endoscope_moveit</exec_depend>
+  <exec_depend>decklink_ros</exec_depend>
 </package>
