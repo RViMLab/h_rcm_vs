@@ -1,21 +1,32 @@
 <launch>
+    <arg name="cname" default="narrow_stereo"/>
+    <arg name="url" default="package://h_rcom_vs/config/cam_params.yml"/>
+    <arg name="image_topic" default="/lbr/storz_endoscope_camera/image_raw"/>
+
     <group ns="lbr">
 
         <!-- load parameters for homography rcom vs -->
-        <rosparam command="load" file="$(find h_rcom_vs)/config/cam_params.yml"/>
         <rosparam command="load" file="$(find h_rcom_vs)/config/h_vs_params.yml"/>
-        <rosparam command="load" file="$(find h_rcom_vs)/config/rcom_params.yml"/>
+        <rosparam command="load" file="$(find h_rcom_vs)/config/four_dof_params.yml"/>
 
         <!-- launch homography generation node
                 - publishes to visual_servo/G 
         -->
-        <node name="h_gen_node" pkg="h_vs" type="h_gen_node.py" output="screen"/>
+        <node name="h_gen_node" pkg="h_vs" type="h_gen_node.py" output="screen">
+            <param name="cname" type="str" value="$(arg cname)"/>
+            <param name="url" type="str" value="$(arg url)"/>
+
+            <remap from="camera/image_raw" to="$(arg image_topic)"/>
+        </node>
 
         <!-- launch homography based visual servo node
                 - subscribes to visual_servo/G 
                 - publishes to visual_servo/twist
         -->
-        <node name="h_vs_node" pkg="h_vs" type="h_vs_node" output="screen"/>
+        <node name="h_vs_node" pkg="h_vs" type="h_vs_node" output="screen">
+            <param name="cname" type="str" value="$(arg cname)"/>
+            <param name="url" type="str" value="$(arg url)"/>
+        </node>
 
         <!-- launch action server 
                 - runs under action_server: 'rcom/RCoM_ActionServer', defined in config/rcom_params.yml 
