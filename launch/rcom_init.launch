@@ -3,12 +3,12 @@
 
     <group ns="lbr">
         <!-- load params -->
-        <rosparam command="load" file="$(find rcom_impl)/config/four_dof_params.yml"/>
+        <rosparam command="load" file="$(find h_rcom_vs)/config/four_dof_params.yml"/>
 
         <!-- launch action server 
-                - runs under action_server: 'RCoM_ActionServer', defined in config/params.yml @ rcom_impl package
+                - runs under action_server: 'h_rcom_vs/RCoM_ActionServer', defined in config/four_dof_params.yml 
         -->
-        <node name="four_dof_rcom_node" pkg="rcom_impl" type="four_dof_rcom_node" output="screen"/>
+        <node name="h_rcom_vs_server_node" pkg="h_rcom_vs" type="h_rcom_vs_server_node" output="screen"/>
 
         <!-- launch action client node
                 - subscribes to camera/image_raw

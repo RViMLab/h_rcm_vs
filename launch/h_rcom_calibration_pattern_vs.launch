@@ -7,7 +7,7 @@
 
         <!-- load parameters for homography rcom vs -->
         <rosparam command="load" file="$(find h_rcom_vs)/config/h_vs_params.yml"/>
-        <rosparam command="load" file="$(find h_rcom_vs)/config/four_dof_params.yml"/>
+        <!-- <rosparam command="load" file="$(find h_rcom_vs)/config/four_dof_params.yml"/> -->
 
         <!-- launch homography generation node
                 - subscribes to visual_servo/img0
@@ -29,11 +29,6 @@
             <param name="cname" type="str" value="$(arg cname)"/>
             <param name="url" type="str" value="$(arg url)"/>
         </node>
-
-        <!-- launch action server 
-                - runs under action_server: 'h_rcom_vs/RCoM_ActionServer', defined in config/rcom_params.yml 
-        -->
-        <node name="h_rcom_vs_server_node" pkg="h_rcom_vs" type="h_rcom_vs_server_node" output="screen"/>
 
         <!-- launch action client node 
                 - subscribes to visual_servo/twist, rcom/p_trocar

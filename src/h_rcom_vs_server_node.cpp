@@ -45,6 +45,33 @@ int main(int argc, char** argv) {
     nh.getParam("t2_p_trocar", t2_p_trocar);
     nh.getParam("max_iter", max_iter);
 
+    // Initialize position
+    auto move_group = moveit::planning_interface::MoveGroupInterface(planning_group);
+    move_group.setMaxVelocityScalingFactor(1.0);
+
+    // Go home
+    move_group.setNamedTarget("home");
+    move_group.move();
+    move_group.stop();
+
+    // Set an initial pose, corresponding to p_trocar
+    auto joint_values = move_group.getCurrentJointValues();
+
+    // initial state
+    joint_values[0] =  0.79396429;
+    joint_values[1] =  1.76694670;
+    joint_values[2] = -1.56914485;
+    joint_values[3] = -1.04951022;
+    joint_values[4] =  0.76358239;
+    joint_values[5] = -0.66000193;
+    joint_values[6] =  1.67966506;
+
+    move_group.setJointValueTarget(joint_values);
+    move_group.move();
+    move_group.stop();
+
+    move_group.setMaxVelocityScalingFactor(1.0);
+
     // Action server
     rcom::HRCoMVSActionServer rcom_as(
         nh, action_server, control_client,
