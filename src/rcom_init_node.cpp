@@ -128,20 +128,10 @@ int main(int argc, char** argv) {
     auto rate = ros::Rate(25);
 
     // auto rnd_vel = rndVelocity(4, 1.);
-    std::vector<double> rnd_vel = {0.5, 0.5, 0.5, 2.0};
+    std::vector<double> rnd_vel = {1.0, 0.5, 0.5, 0.0};
     auto goal = rcomGoalFromVel(rnd_vel, std::vector<double>(2, 0.));
 
     int counter = 0;
-    while (counter < 200) {
-        counter++;
-        ac.sendGoal(goal);
-        rate.sleep();
-    }
-
-    rnd_vel = {0., 0., 0., 2.0};
-    goal = rcomGoalFromVel(rnd_vel, std::vector<double>(2, 0.));
-
-    counter = 0;
     while (counter < 200) {
         counter++;
         ac.sendGoal(goal);
