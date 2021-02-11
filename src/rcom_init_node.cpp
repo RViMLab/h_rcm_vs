@@ -54,16 +54,12 @@ std::vector<double> rndVelocity(int task_dim, double max_vel=1.) {
     return vel;
 }
 
-rcom_msgs::rcomGoal rcomGoalFromVel(std::vector<double> vel, std::vector<double> apd) {
+rcom_msgs::rcomGoal rcomGoalFromVel(std::vector<double> vel) {
     rcom_msgs::rcomGoal goal;
     goal.states.p_trocar.is_empty = true;
     goal.states.task.is_velocity = true;
 
     goal.states.task.values = vel;
-
-    for (int i = 0; i < apd.size(); i++) {
-        goal.states.task.values.push_back(apd[i]);
-    }
 
     return goal;
 }
@@ -128,8 +124,8 @@ int main(int argc, char** argv) {
     auto rate = ros::Rate(25);
 
     // auto rnd_vel = rndVelocity(4, 1.);
-    std::vector<double> rnd_vel = {1.0, 0.5, 0.5, 0.0};
-    auto goal = rcomGoalFromVel(rnd_vel, std::vector<double>(2, 0.));
+    std::vector<double> rnd_vel = {0.0, 0.0, 0.0, 0.0, 0.0, 0.5};  // x,y,z,r,p,y wrt camera frame
+    auto goal = rcomGoalFromVel(rnd_vel);
 
     int counter = 0;
     while (counter < 200) {
@@ -140,7 +136,7 @@ int main(int argc, char** argv) {
 
     // Run to ensure p_trocar convergence
     std::vector<double> zero_vel(rnd_vel.size(), 0.);
-    goal = rcomGoalFromVel(zero_vel, std::vector<double>(2, 0.));
+    goal = rcomGoalFromVel(zero_vel);
 
     counter = 0;
     while (counter < 100) {

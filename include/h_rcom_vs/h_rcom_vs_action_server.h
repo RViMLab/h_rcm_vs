@@ -31,7 +31,6 @@ class HRCoMVSActionServer : BaseRCoMActionServer {
 
         // Transform the task from camera to world frame
         virtual Eigen::VectorXd _transformTask(Eigen::VectorXd& td) override;
-
 };
 
 
@@ -60,7 +59,7 @@ Eigen::MatrixXd HRCoMVSActionServer::_computeTaskJacobian(moveit::core::RobotSta
         Jt
     );
 
-    return Jt.topRows(4);
+    return Jt;
 };
 
 
@@ -77,8 +76,8 @@ Eigen::VectorXd HRCoMVSActionServer::_computeTaskForwardKinematics(std::vector<d
     double r, p, y;
     rot.getRPY(r, p, y);
 
-    Eigen::VectorXd t(4); 
-    t << robot_state.getGlobalLinkTransform(_link_pip1).translation(), r;
+    Eigen::VectorXd t(6); 
+    t << robot_state.getGlobalLinkTransform(_link_pip1).translation(), r, p, y;
 
     return t;
 };
@@ -88,13 +87,19 @@ Eigen::VectorXd HRCoMVSActionServer::_transformTask(Eigen::VectorXd& td) {
 
     auto robot_state = _move_group.getCurrentState();
 
+    if (td.size() != 6) throw std::invalid_argument("Size of desired task must equal 6.");
+
+    // Set pitch and yaw to zero
+    Eigen::VectorXd t(6);
+    t << td[0], td[1], td[2], 0., 0., td[5];  // controls yaw of camera, assumes z-axis as optical axis
+
     // Rotate task from camera frame to world frame
     Eigen::MatrixXd R(6, 6);
     R << robot_state->getGlobalLinkTransform(_link_pip1).rotation(), Eigen::Matrix3d::Zero(),
         Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation();
 
-    td = R*td;
-    return td.topRows(4);
-}
+    t = R*t;
+    return t;
+};
 
 } // namespace rcom
