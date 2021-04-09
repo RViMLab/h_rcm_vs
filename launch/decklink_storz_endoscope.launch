@@ -26,7 +26,5 @@
         <!-- note that the image is rectified as part of the image processing pipelin in h_vs -->
     </group>
 
-    
-
 </launch>
     
