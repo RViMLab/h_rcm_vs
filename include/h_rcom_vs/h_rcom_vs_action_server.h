@@ -30,8 +30,8 @@ class HRCoMVSActionServer : BaseRCoMActionServer {
         // Compute error between current and desired values via forward kinematics
         virtual Eigen::VectorXd _computeTaskForwardKinematics(std::vector<double>& q) override;
 
-        // // Transform the task from camera to world frame
-        // virtual Eigen::VectorXd _transformTask(Eigen::VectorXd& td) override;
+        // Transform the task from camera to world frame
+        virtual Eigen::VectorXd _transformTask(Eigen::VectorXd& td) override;
 };
 
 
@@ -95,23 +95,23 @@ Eigen::VectorXd HRCoMVSActionServer::_computeTaskForwardKinematics(std::vector<d
 };
 
 
-// Eigen::VectorXd HRCoMVSActionServer::_transformTask(Eigen::VectorXd& td) {
+Eigen::VectorXd HRCoMVSActionServer::_transformTask(Eigen::VectorXd& td) {
 
-//     auto robot_state = _move_group.getCurrentState();
+    // auto robot_state = _move_group.getCurrentState();
 
-//     if (td.size() != 6) throw std::invalid_argument("Size of desired task must equal 6.");
+    if (td.size() != 6) throw std::invalid_argument("Size of desired task must equal 6.");
 
-//     // Set pitch and yaw to zero
-//     Eigen::VectorXd t(6);
-//     t << td[0], td[1], td[2], 0., 0., td[5];  // controls yaw of camera, assumes z-axis as optical axis
+    // Set pitch and yaw to zero
+    Eigen::VectorXd t(4);
+    t << td[0], td[1], td[2], td[5];  // controls yaw of camera, assumes z-axis as optical axis
 
-//     // Rotate task from camera frame to world frame
-//     Eigen::MatrixXd R(6, 6);
-//     R << robot_state->getGlobalLinkTransform(_link_pip1).rotation(), Eigen::Matrix3d::Zero(),
-//         Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation();
+    // // Rotate task from camera frame to world frame
+    // Eigen::MatrixXd R(6, 6);
+    // R << robot_state->getGlobalLinkTransform(_link_pip1).rotation(), Eigen::Matrix3d::Zero(),
+    //     Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation();
 
-//     t = R*t;
-//     return t;
-// };
+    // t = R*t;
+    return t;
+};
 
 } // namespace rcom
