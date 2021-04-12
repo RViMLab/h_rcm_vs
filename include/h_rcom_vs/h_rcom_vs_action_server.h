@@ -2,6 +2,7 @@
 
 #include <tf/tf.h>
 #include <tf_conversions/tf_eigen.h>
+#include <eigen3/unsupported/Eigen/EulerAngles>
 
 #include <rcom_impl/base_rcom_action_server.h>
 
@@ -59,16 +60,16 @@ Eigen::MatrixXd HRCoMVSActionServer::_computeTaskJacobian(moveit::core::RobotSta
         Jt
     );
 
-    // Rotate task from camera frame to world frame
+    // Rotate task from world frame to camera frame
     Eigen::MatrixXd R(6, 6);
-    R << robot_state->getGlobalLinkTransform(_link_pip1).rotation(), Eigen::Matrix3d::Zero(),
-        Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation();
+    R << robot_state->getGlobalLinkTransform(_link_pip1).rotation().inverse(), Eigen::Matrix3d::Zero(),
+        Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation().inverse();
 
-    // Eigen::MatrixXd proj(4, 4);
-    // proj.topLeftCorner(3, 3) << Eigen::Matrix3d::Identity();
-    // proj(4, 4) = 1.;
+    Eigen::MatrixXd proj = Eigen::MatrixXd::Zero(4, 6);
+    proj.topLeftCorner(3, 3) = Eigen::Matrix3d::Identity();
+    proj(3, 5) = 1.;
 
-    return R*Jt;  // possibly times proj 
+    return proj*R*Jt;
 };
 
 
@@ -80,19 +81,17 @@ Eigen::VectorXd HRCoMVSActionServer::_computeTaskForwardKinematics(std::vector<d
 
     robot_state.setJointGroupPositions(robot_state.getJointModelGroup(_move_group.getName()), q);
 
-    tf::Matrix3x3 rot;
-    tf::matrixEigenToTF(robot_state.getGlobalLinkTransform(_link_pip1).rotation(), rot);
-    double r, p, y;
-    rot.getRPY(r, p, y);
-
-    Eigen::VectorXd t(6); 
-    t << robot_state.getGlobalLinkTransform(_link_pip1).translation(), r, p, y;
-
+    // https://eigen.tuxfamily.org/dox/unsupported/classEigen_1_1EulerAngles.html
+    auto R = robot_state.getGlobalLinkTransform(_link_pip1).rotation();
+    auto euler = Eigen::EulerAnglesZXZd(R);
     // Eigen::MatrixXd proj(4, 4);
     // proj.topLeftCorner(3, 3) << Eigen::Matrix3d::Identity();
     // proj(4, 4) = 1.;
 
-    return t; // possibly times proj
+    Eigen::VectorXd t(4); 
+    t << robot_state.getGlobalLinkTransform(_link_pip1).translation(), euler.gamma();
+
+    return t;
 };
 
 
