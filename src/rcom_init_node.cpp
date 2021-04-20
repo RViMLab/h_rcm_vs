@@ -123,8 +123,8 @@ int main(int argc, char** argv) {
     // Send velocity goal at rate
     auto rate = ros::Rate(25);
 
-    // auto rnd_vel = rndVelocity(4, 1.);
-    std::vector<double> rnd_vel = {0.0, 0.0, 0.0, 0.0, 0.0, 0.5};  // x,y,z,r,p,y wrt camera frame
+    auto rnd_vel = rndVelocity(6, 0.05);
+    // std::vector<double> rnd_vel = {0.0, 0.0, 0.0, 0.0, 0.0, 0.5};  // x,y,z,r,p,y wrt camera frame
     auto goal = rcomGoalFromVel(rnd_vel);
 
     int counter = 0;
