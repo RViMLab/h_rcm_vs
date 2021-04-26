@@ -7,6 +7,7 @@
     <arg name="cname" default="narrow_stereo"/>
     <arg name="url" default="package://h_rcom_vs/config/cam_params.yml"/>
     <arg name="image_topic" default="/lbr/storz_endoscope_camera/image_raw"/>
+    <arg name="sim" default="True"/>
 
     <group ns="lbr">
 
@@ -33,6 +34,7 @@
         <node name="h_gen_endoscopy_stored_views_node" pkg="h_vs" type="h_gen_endoscopy_stored_views_node.py" output="screen">
             <param name="cname" type="str" value="$(arg cname)"/>
             <param name="url" type="str" value="$(arg url)"/>
+            <param name="sim" type="bool" value="$(arg sim)"/>
 
             <remap from="camera/image_raw" to="$(arg image_topic)"/>
         </node>
