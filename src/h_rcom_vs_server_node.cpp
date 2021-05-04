@@ -47,12 +47,12 @@ int main(int argc, char** argv) {
 
     // Initialize position
     auto move_group = moveit::planning_interface::MoveGroupInterface(planning_group);
-    move_group.setMaxVelocityScalingFactor(1.0);
+    move_group.setMaxVelocityScalingFactor(0.01);
 
-    // Go home
-    move_group.setNamedTarget("home");
-    move_group.move();
-    move_group.stop();
+    // // Go home
+    // move_group.setNamedTarget("home");
+    // move_group.move();
+    // move_group.stop();
 
     // Set an initial pose, corresponding to p_trocar
     auto joint_values = move_group.getCurrentJointValues();
@@ -65,6 +65,13 @@ int main(int argc, char** argv) {
     joint_values[4] =  0.76358239;
     joint_values[5] = -0.66000193;
     joint_values[6] =  1.67966506;
+    // joint_values[0] =  0.8921;
+    // joint_values[1] =  1.7358;
+    // joint_values[2] = -1.5782;
+    // joint_values[3] = -1.1233;
+    // joint_values[4] =  0.7350;
+    // joint_values[5] = -0.6418;
+    // joint_values[6] =  1.6835;
 
     move_group.setJointValueTarget(joint_values);
     move_group.move();
