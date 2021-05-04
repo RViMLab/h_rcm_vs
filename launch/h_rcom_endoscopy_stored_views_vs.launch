@@ -8,6 +8,7 @@
     <arg name="url" default="package://h_rcom_vs/config/cam_params.yml"/>
     <arg name="image_topic" default="/lbr/storz_endoscope_camera/image_raw"/>
     <arg name="sim" default="True"/>
+    <arg name="repeat" default="False"/>
 
     <group ns="lbr">
 
@@ -24,7 +25,9 @@
                 - publishes to visual_servo/twist
                 - todo service
         -->
-        <node name="control_gallery_node" pkg="h_vs" type="control_gallery_node.py" output="screen"/>
+        <node name="control_gallery_node" pkg="h_vs" type="control_gallery_node.py" output="screen">
+                <param name="repeat" type="bool" value="$(arg repeat)"/>
+        </node>
 
         <!-- launch homography generation node
                 - subscribes to camera/image_raw
