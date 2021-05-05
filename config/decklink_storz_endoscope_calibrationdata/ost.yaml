@@ -1,13 +1,13 @@
 image_width: 1080
 image_height: 1080
-camera_name: narrow_stereo
+camera_name: decklink
 camera_matrix:
   rows: 3
   cols: 3
   data: [666.05025,   0.     , 511.98465,
            0.     , 665.2963 , 548.99619,
            0.     ,   0.     ,   1.     ]
-camera_model: plumb_bob
+distortion_model: plumb_bob  # by default camera_model -> change to distortion_model
 distortion_coefficients:
   rows: 1
   cols: 5
