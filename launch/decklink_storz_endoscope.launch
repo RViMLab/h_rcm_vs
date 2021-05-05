@@ -1,12 +1,14 @@
 <launch>
     <arg name="camera_name" default="decklink"/>
     <arg name="calibration_url" default="package://h_rcom_vs/config/decklink_storz_endoscope_calibrationdata/ost.yaml"/>
+    <arg name="frame_id" default="storz_endoscope_link_cm_optical"/>
 
     <group ns="decklink">
         <!-- launch decklink_ros -->
         <node pkg="decklink_ros" name="decklink_ros_node" type="decklink_ros_node" output="screen">
             <param name="camera_name" type="str" value="$(arg camera_name)"/>
             <param name="calibration_url" type="str" value="$(arg calibration_url)"/>
+            <param name="frame_id" type="str" value="$(arg frame_id)"/>
         </node>
 
         <!-- see https://answers.ros.org/question/248194/how-to-use-image_proccrop_decimate-to-crop-an-image/ -->
