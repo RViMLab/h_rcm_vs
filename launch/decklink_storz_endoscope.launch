@@ -1,6 +1,6 @@
 <launch>
     <arg name="camera_name" default="decklink"/>
-    <arg name="calibration_url" default="package://h_rcom_vs/config/decklink_storz_endoscope_calibrationdata/ost.yaml"/>
+    <arg name="calibration_url" default="package://h_rcm_vs/config/decklink_storz_endoscope_calibrationdata/ost.yaml"/>
     <arg name="frame_id" default="storz_endoscope_link_cm_optical"/>
 
     <group ns="decklink">

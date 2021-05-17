@@ -1,4 +1,4 @@
-action_server: 'h_rcom_vs/RCoM_ActionServer'
+action_server: 'h_rcm_vs/RCM_ActionServer'
 control_client: 'PositionJointInterface_trajectory_controller/follow_joint_trajectory'
 planning_group: 'arm_endoscope'
 
@@ -11,7 +11,7 @@ kircm: [0., 0., 0.]
 kdrcm: [0., 0., 0.]
 lambda0: 0.7
 
-# control interval, in velocity control: rate at which rcom goals are sent, else: sets interval to execute incremental motion
+# control interval, in velocity control: rate at which rcm goals are sent, else: sets interval to execute incremental motion
 dt: 0.01
 
 # velocity scaling

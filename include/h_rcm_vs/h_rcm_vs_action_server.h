@@ -4,17 +4,17 @@
 #include <tf_conversions/tf_eigen.h>
 #include <eigen3/unsupported/Eigen/EulerAngles>
 
-#include <rcom_impl/base_rcom_action_server.h>
+#include <rcm_impl/base_rcm_action_server.h>
 
 
-namespace rcom
+namespace rcm
 {
 
-class HRCoMVSActionServer : BaseRCoMActionServer {
+class HRCMVSActionServer : BaseRCMActionServer {
 
     public:
 
-        HRCoMVSActionServer(      
+        HRCMVSActionServer(      
             ros::NodeHandle nh, std::string action_server, std::string control_client, 
             std::vector<double> kpt, std::vector<double> kit, std::vector<double> kdt, 
             std::vector<double> kprcm, std::vector<double> kircm, std::vector<double> kdrcm, double lambda0, double dt, 
@@ -36,14 +36,14 @@ class HRCoMVSActionServer : BaseRCoMActionServer {
 };
 
 
-HRCoMVSActionServer::HRCoMVSActionServer(
+HRCMVSActionServer::HRCMVSActionServer(
     ros::NodeHandle nh, std::string action_server, std::string control_client, 
     std::vector<double> kpt, std::vector<double> kit, std::vector<double> kdt,
     std::vector<double> kprcm, std::vector<double> kircm, std::vector<double> kdrcm, double lambda0, double dt, 
     std::string planning_group, double alpha, std::string link_pi, std::string link_pip1,
     double t1_td, double t1_p_trocar, double t2_td, double t2_p_trocar, std::vector<double> t_td_scale, int max_iter,
     double exp_smooth, double dumping
-) : BaseRCoMActionServer(
+) : BaseRCMActionServer(
     nh, action_server, control_client, 
     kpt, kit, kdt, kprcm, kircm, kdrcm, lambda0, dt, 
     planning_group, alpha, link_pi, link_pip1, 
@@ -51,7 +51,7 @@ HRCoMVSActionServer::HRCoMVSActionServer(
     exp_smooth, dumping) {   };
 
 
-Eigen::MatrixXd HRCoMVSActionServer::_computeTaskJacobian(moveit::core::RobotStatePtr robot_state) {
+Eigen::MatrixXd HRCMVSActionServer::_computeTaskJacobian(moveit::core::RobotStatePtr robot_state) {
 
     // Compute task jacobian
     Eigen::MatrixXd Jt;
@@ -76,7 +76,7 @@ Eigen::MatrixXd HRCoMVSActionServer::_computeTaskJacobian(moveit::core::RobotSta
 };
 
 
-Eigen::VectorXd HRCoMVSActionServer::_computeTaskForwardKinematics(std::vector<double>& q) {
+Eigen::VectorXd HRCMVSActionServer::_computeTaskForwardKinematics(std::vector<double>& q) {
 
     // Compute forward kinematics
     auto robot_model = _move_group.getRobotModel();
@@ -98,7 +98,7 @@ Eigen::VectorXd HRCoMVSActionServer::_computeTaskForwardKinematics(std::vector<d
 };
 
 
-Eigen::VectorXd HRCoMVSActionServer::_transformTask(Eigen::VectorXd& td) {
+Eigen::VectorXd HRCMVSActionServer::_transformTask(Eigen::VectorXd& td) {
 
     // auto robot_state = _move_group.getCurrentState();
 
@@ -117,4 +117,4 @@ Eigen::VectorXd HRCoMVSActionServer::_transformTask(Eigen::VectorXd& td) {
     return t;
 };
 
-} // namespace rcom
+} // namespace rcm

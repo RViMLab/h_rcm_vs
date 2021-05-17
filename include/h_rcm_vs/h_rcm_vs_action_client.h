@@ -8,32 +8,32 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Pose.h>
 
-#include <rcom_msgs/rcom.h>
-#include <rcom_msgs/task.h>
-#include <rcom_msgs/p_trocar.h>
-#include <rcom_msgs/rcomAction.h>
+#include <rcm_msgs/rcm.h>
+#include <rcm_msgs/task.h>
+#include <rcm_msgs/p_trocar.h>
+#include <rcm_msgs/rcmAction.h>
 
 
-class HRCoMVSActionClient
+class HRCMVSActionClient
 {
 public:
 
-    HRCoMVSActionClient(
+    HRCMVSActionClient(
         ros::NodeHandle& nh, 
         std::string& action_server, std::string& twist_topic, std::string& p_trocar_topic, 
         double dt
     );
 
-    ~HRCoMVSActionClient();
+    ~HRCMVSActionClient();
 
 private:
 
     ros::NodeHandle _nh;
 
-    rcom_msgs::task _task;
-    rcom_msgs::p_trocar _p_trocar;
+    rcm_msgs::task _task;
+    rcm_msgs::p_trocar _p_trocar;
 
-    actionlib::SimpleActionClient<rcom_msgs::rcomAction> _ac;
+    actionlib::SimpleActionClient<rcm_msgs::rcmAction> _ac;
 
     ros::Timer _timer;
 
