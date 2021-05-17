@@ -3,12 +3,12 @@
 #include <ros/ros.h>
 #include <moveit/move_group_interface/move_group_interface.h>
 
-#include <h_rcom_vs/h_rcom_vs_action_server.h>
+#include <h_rcm_vs/h_rcm_vs_action_server.h>
 
 
 int main(int argc, char** argv) {
 
-    ros::init(argc, argv, "rcom_node");
+    ros::init(argc, argv, "rcm_node");
     auto nh = ros::NodeHandle();
     auto spinner = ros::AsyncSpinner(2);
     spinner.start();
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     move_group.setMaxVelocityScalingFactor(1.0);
 
     // Action server
-    rcom::HRCoMVSActionServer rcom_as(
+    rcm::HRCMVSActionServer rcm_as(
         nh, action_server, control_client,
         kpt, kit, kdt, kprcm, kircm, kdrcm, lambda0, dt,
         planning_group, alpha, link_pi, link_pip1,

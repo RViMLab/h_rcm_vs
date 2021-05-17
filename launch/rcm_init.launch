@@ -3,18 +3,18 @@
 
     <group ns="lbr">
         <!-- load params -->
-        <rosparam command="load" file="$(find h_rcom_vs)/config/four_dof_params.yml"/>
+        <rosparam command="load" file="$(find h_rcm_vs)/config/four_dof_params.yml"/>
 
         <!-- launch action server 
-                - runs under action_server: 'h_rcom_vs/RCoM_ActionServer', defined in config/four_dof_params.yml 
+                - runs under action_server: 'h_rcm_vs/RCM_ActionServer', defined in config/four_dof_params.yml 
         -->
-        <node name="h_rcom_vs_server_node" pkg="h_rcom_vs" type="h_rcom_vs_server_node" output="screen"/>
+        <node name="h_rcm_vs_server_node" pkg="h_rcm_vs" type="h_rcm_vs_server_node" output="screen"/>
 
         <!-- launch action client node
                 - subscribes to camera/image_raw
                 - publishes to visual_servo/img0
         -->
-        <node name="rcom_init_node" pkg="h_rcom_vs" type="rcom_init_node" output="screen">
+        <node name="rcm_init_node" pkg="h_rcm_vs" type="rcm_init_node" output="screen">
             <remap from="camera/image_raw" to="$(arg image_topic)"/>
         </node>
 

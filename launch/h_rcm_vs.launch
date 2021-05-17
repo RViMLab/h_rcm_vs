@@ -1,20 +1,18 @@
 <launch>
     <arg name="cname" default="narrow_stereo"/>
-    <arg name="url" default="package://h_rcom_vs/config/cam_params.yml"/>
+    <arg name="url" default="package://h_rcm_vs/config/cam_params.yml"/>
     <arg name="image_topic" default="/lbr/storz_endoscope_camera/image_raw"/>
 
     <group ns="lbr">
 
-        <!-- load parameters for homography rcom vs -->
-        <rosparam command="load" file="$(find h_rcom_vs)/config/h_vs_params.yml"/>
-        <!-- <rosparam command="load" file="$(find h_rcom_vs)/config/four_dof_params.yml"/> -->
+        <!-- load parameters for homography rcm vs -->
+        <rosparam command="load" file="$(find h_rcm_vs)/config/h_vs_params.yml"/>
+        <rosparam command="load" file="$(find h_rcm_vs)/config/four_dof_params.yml"/>
 
         <!-- launch homography generation node
-                - subscribes to visual_servo/img0
-                - subscribes to camera/image_raw
                 - publishes to visual_servo/G 
         -->
-        <node name="h_gen_calibration_pattern_node" pkg="h_vs" type="h_gen_calibration_pattern_node.py" output="screen">
+        <node name="h_gen_node" pkg="h_vs" type="h_gen_node.py" output="screen">
             <param name="cname" type="str" value="$(arg cname)"/>
             <param name="url" type="str" value="$(arg url)"/>
 
@@ -30,11 +28,16 @@
             <param name="url" type="str" value="$(arg url)"/>
         </node>
 
-        <!-- launch action client node 
-                - subscribes to visual_servo/twist, rcom/p_trocar
-                - requests rcom goals from action server under action_server: 'h_rcom_vs/RCoM_ActionServer', defined in config/rcom_params.yml
+        <!-- launch action server 
+                - runs under action_server: 'rcm/RCM_ActionServer', defined in config/rcm_params.yml 
         -->
-        <node name="h_rcom_vs_client_node" pkg="h_rcom_vs" type="h_rcom_vs_client_node" output="screen"/>
+        <node name="h_rcm_vs_server_node" pkg="h_rcm_vs" type="h_rcm_vs_server_node" output="screen"/>
+
+        <!-- launch action client node 
+                - subscribes to visual_servo/twist, rcm/p_trocar
+                - requests rcm goals from action server under action_server: 'rcm/RCM_ActionServer', defined in config/rcm_params.yml
+        -->
+        <node name="h_rcm_vs_client_node" pkg="h_rcm_vs" type="h_rcm_vs_client_node" output="screen"/>
     </group>
 
 </launch>
