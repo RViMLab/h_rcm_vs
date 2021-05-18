@@ -20,7 +20,7 @@ class HRCMVSActionServer : BaseRCMActionServer {
             std::vector<double> kprcm, std::vector<double> kircm, std::vector<double> kdrcm, double lambda0, double dt, 
             std::string planning_group, double alpha, std::string link_pi, std::string link_pip1,
             double t1_td, double t1_p_trocar, double t2_td, double t2_p_trocar, std::vector<double> t_td_scale, int max_iter,
-            double exp_smooth, double dumping
+            double exp_smooth, double dumping, bool rcm_priority
         );
 
     private:
@@ -42,13 +42,13 @@ HRCMVSActionServer::HRCMVSActionServer(
     std::vector<double> kprcm, std::vector<double> kircm, std::vector<double> kdrcm, double lambda0, double dt, 
     std::string planning_group, double alpha, std::string link_pi, std::string link_pip1,
     double t1_td, double t1_p_trocar, double t2_td, double t2_p_trocar, std::vector<double> t_td_scale, int max_iter,
-    double exp_smooth, double dumping
+    double exp_smooth, double dumping, bool rcm_priority
 ) : BaseRCMActionServer(
     nh, action_server, control_client, 
     kpt, kit, kdt, kprcm, kircm, kdrcm, lambda0, dt, 
     planning_group, alpha, link_pi, link_pip1, 
     t1_td, t1_p_trocar, t2_td, t2_p_trocar, t_td_scale, max_iter,
-    exp_smooth, dumping) {   };
+    exp_smooth, dumping, rcm_priority) {   };
 
 
 Eigen::MatrixXd HRCMVSActionServer::_computeTaskJacobian(moveit::core::RobotStatePtr robot_state) {
@@ -69,8 +69,10 @@ Eigen::MatrixXd HRCMVSActionServer::_computeTaskJacobian(moveit::core::RobotStat
         Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation().inverse();
 
     Eigen::MatrixXd proj = Eigen::MatrixXd::Zero(4, 6);
-    proj.topLeftCorner(3, 3) = Eigen::Matrix3d::Identity();
-    proj(3, 5) = 1.;
+    // proj.topLeftCorner(3, 3) = Eigen::Matrix3d::Identity();
+    // proj(3, 5) = 1.;
+    proj.bottomRightCorner(3, 3) = Eigen::Matrix3d::Identity();
+    proj(0, 2) = 1.;
 
     return proj*R*Jt;
 };
@@ -106,7 +108,8 @@ Eigen::VectorXd HRCMVSActionServer::_transformTask(Eigen::VectorXd& td) {
 
     // Set pitch and yaw to zero
     Eigen::VectorXd t(4);
-    t << td[0], td[1], td[2], td[5];  // controls yaw of camera, assumes z-axis as optical axis
+    // t << td[0], td[1], td[2], td[5];  // controls yaw of camera, assumes z-axis as optical axis
+    t << td[2], td[3], td[4], td[5];  // controls yaw of camera, assumes z-axis as optical axis
 
     // // Rotate task from camera frame to world frame
     // Eigen::MatrixXd R(6, 6);

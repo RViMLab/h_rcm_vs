@@ -1,21 +1,21 @@
-action_server: 'h_rcom_vs/RCoM_ActionServer'
+action_server: 'h_rcm_vs/RCM_ActionServer'
 control_client: 'PositionJointInterface_trajectory_controller/follow_joint_trajectory'
 planning_group: 'arm_endoscope'
 
 # task and remote center of motion gains - proportional, integral, differential
-kpt: [0.8,0.8,2.,5.]
+kpt: [0.5,0.5,1.25,10.]
 kit: [0.,0.,0.,0.]
 kdt: [0.,0.,0.,0.]
-kprcm: [10, 10, 10]
+kprcm: [20, 20, 20]
 kircm: [0., 0., 0.]
-kdrcm: [0.5, 0.5, 0.5]
+kdrcm: [0., 0., 0.]
 lambda0: 1.0  # initialize at 1.0 for manual insertion
 
-# control interval, in velocity control: rate at which rcom goals are sent, else: sets interval to execute incremental motion
-dt: 0.1
+# control interval, in velocity control: rate at which rcm goals are sent, else: sets interval to execute incremental motion
+dt: 0.05
 
 # velocity scaling
-alpha: 0.5
+alpha: 1.0
 
 # link names
 link_pi: 'storz_endoscope_link_1'
@@ -23,7 +23,7 @@ link_pip1: 'storz_endoscope_link_cm_optical'
 
 # threshold 1, divergence check prior to execution
 t1_td: 0.2
-t1_p_trocar: 0.015
+t1_p_trocar: 0.01
 
 # threshold 2, convergence check after execution
 t2_td: 0.001
@@ -35,6 +35,7 @@ t_td_scale: [1.0, 1.0, 1.0, 0.1]
 # max number of iterations
 max_iter: 10
 
-# exponential smoothing in [0, 1] and dumping for pseudo inverse
-exp_smooth: 0.5  # 1.0 means no smoothing is applied
-dumping: 0.001
+# exponential smoothing in [0, 1], dumping for pseudo inverse, RCM priority for nullspace optimization
+exp_smooth: 1.0  # 1.0 means no smoothing is applied
+dumping: 0.01
+rcm_priority: false

@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
     std::vector<double> t_td_scale;
     int max_iter;
     double exp_smooth, dumping;
+    bool rcm_priority;
 
     nh.getParam("action_server", action_server);
     nh.getParam("control_client", control_client);
@@ -47,6 +48,7 @@ int main(int argc, char** argv) {
     nh.getParam("max_iter", max_iter);
     nh.getParam("exp_smooth", exp_smooth);
     nh.getParam("dumping", dumping);
+    nh.getParam("rcm_priority", rcm_priority);
 
     // Initialize position
     auto move_group = moveit::planning_interface::MoveGroupInterface(planning_group);
@@ -61,21 +63,21 @@ int main(int argc, char** argv) {
     auto joint_values = move_group.getCurrentJointValues();
 
     // initial state
-    joint_values[0] =  0.79396429;
-    joint_values[1] =  1.76694670;
-    joint_values[2] = -1.56914485;
-    joint_values[3] = -1.04951022;
-    joint_values[4] =  0.76358239;
-    joint_values[5] = -0.66000193;
-    joint_values[6] =  1.67966506;
-    // joint_values[0] =  0.8921;
-    // joint_values[1] =  1.7358;
-    // joint_values[2] = -1.5782;
-    // joint_values[3] = -1.1233;
-    // joint_values[4] =  0.7350;
-    // joint_values[5] = -0.6418;
-    // joint_values[6] =  1.6835;
-
+    // joint_values[0] =  0.79396429;
+    // joint_values[1] =  1.76694670;
+    // joint_values[2] = -1.56914485;
+    // joint_values[3] = -1.04951022;
+    // joint_values[4] =  0.76358239;
+    // joint_values[5] = -0.66000193;
+    // joint_values[6] =  1.67966506;
+    // joint_values[0] = -0.027038827;
+    // joint_values[1] =  0.533320696;
+    // joint_values[2] = -0.329700728;
+    // joint_values[3] = -1.778121873;
+    // joint_values[4] = -0.596783228;
+    // joint_values[5] = -1.223459985;
+    // joint_values[6] =  1.330856804;
+                        
     move_group.setJointValueTarget(joint_values);
     move_group.move();
     move_group.stop();
@@ -88,7 +90,7 @@ int main(int argc, char** argv) {
         kpt, kit, kdt, kprcm, kircm, kdrcm, lambda0, dt,
         planning_group, alpha, link_pi, link_pip1,
         t1_td, t1_p_trocar, t2_td, t2_p_trocar, t_td_scale, max_iter,
-        exp_smooth, dumping
+        exp_smooth, dumping, rcm_priority
     );
 
     ros::waitForShutdown();
