@@ -4,14 +4,14 @@ camera_name: decklink
 camera_matrix:
   rows: 3
   cols: 3
-  data: [666.05025,   0.     , 511.98465,
-           0.     , 665.2963 , 548.99619,
+  data: [690.18781,   0.     , 514.89903,
+           0.     , 690.49132, 550.98426,
            0.     ,   0.     ,   1.     ]
 distortion_model: plumb_bob  # by default camera_model -> change to distortion_model
 distortion_coefficients:
   rows: 1
   cols: 5
-  data: [-0.404144, 0.177557, 0.001159, 0.002410, 0.000000]
+  data: [-0.392587, 0.150600, -0.001278, -0.000242, 0.000000]
 rectification_matrix:
   rows: 3
   cols: 3
@@ -21,6 +21,6 @@ rectification_matrix:
 projection_matrix:
   rows: 3
   cols: 4
-  data: [532.90228,   0.     , 517.70198,   0.     ,
-           0.     , 534.53571, 550.20696,   0.     ,
+  data: [532.62012,   0.     , 512.87187,   0.     ,
+           0.     , 533.74896, 548.52144,   0.     ,
            0.     ,   0.     ,   1.     ,   0.     ]
