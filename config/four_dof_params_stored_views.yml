@@ -1,4 +1,4 @@
-action_server: 'h_rcom_vs/RCM_ActionServer'
+action_server: 'h_rcm_vs/RCM_ActionServer'
 control_client: 'PositionJointInterface_trajectory_controller/follow_joint_trajectory'
 planning_group: 'arm_endoscope'
 
