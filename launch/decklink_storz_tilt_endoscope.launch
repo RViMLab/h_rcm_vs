@@ -1,0 +1,31 @@
+<launch>
+    <arg name="camera_name" default="decklink"/>
+    <arg name="calibration_url" default="package://h_rcm_vs/config/decklink_storz_tilt_endoscope_calibrationdata/ost.yaml"/>
+    <arg name="frame_id" default="storz_tilt_endoscope_link_cm_optical"/>
+
+    <group ns="decklink">
+        <!-- launch decklink_ros -->
+        <node pkg="decklink_ros" name="decklink_ros_node" type="decklink_ros_node" output="screen">
+            <param name="camera_name" type="str" value="$(arg camera_name)"/>
+            <param name="calibration_url" type="str" value="$(arg calibration_url)"/>
+            <param name="frame_id" type="str" value="$(arg frame_id)"/>
+        </node>
+
+        <!-- see https://answers.ros.org/question/248194/how-to-use-image_proccrop_decimate-to-crop-an-image/ -->
+        <node pkg="nodelet" name="image_proc_crop_decimate" type="nodelet" args="standalone image_proc/crop_decimate">
+            <param name="x_offset" type="int" value="430"/>  <!-- 480 -->
+            <param name="y_offset" type="int" value="0"/>  <!-- 70 -->
+            <param name="width" type="int" value="1080"/>  <!-- 1000 -->
+            <param name="height" type="int" value="1080"/>  <!-- 1000 -->
+
+            <remap from="camera/image_raw" to="image_raw"/>
+            <remap from="camera/camera_info" to="camera_info"/>
+
+            <remap from="camera_out/image_raw" to="crop/image_raw"/>
+            <remap from="camera_out/camera_info" to="crop/camera_info"/>
+        </node>
+
+        <!-- note that the image is rectified as part of the image processing pipelin in h_vs -->
+    </group>
+
+</launch>

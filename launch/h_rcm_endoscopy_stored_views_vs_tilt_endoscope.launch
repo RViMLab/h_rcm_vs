@@ -1,0 +1,62 @@
+<!-- launch h_rcm_vs_server (includes pose init, previously done in rcm_init.launch), h_gen, h_vs, h_rcm_client -->
+
+
+
+
+<launch>
+    <arg name="cname" default="narrow_stereo"/>
+    <arg name="url" default="package://h_rcm_vs/config/cam_params.yml"/>
+    <arg name="image_topic" default="/lbr/storz_tilt_endoscope_camera/image_raw"/>
+    <arg name="sim" default="True"/>
+    <arg name="repeat" default="False"/>
+
+    <group ns="lbr">
+
+        <!-- load parameters for homography rcm vs -->
+        <rosparam command="load" file="$(find h_rcm_vs)/config/h_vs_params_stored_views_tilt_endoscope.yml"/>
+        <rosparam command="load" file="$(find h_rcm_vs)/config/four_dof_params_stored_views_tilt_endoscope.yml"/>
+
+        <!-- launch action server 
+                - runs under action_server: 'h_rcm_vs/RCM_ActionServer', defined in config/four_dof_params.yml 
+        -->
+        <node name="h_rcm_vs_server_node" pkg="h_rcm_vs" type="h_rcm_vs_server_node" output="screen"/>
+
+        <!-- launch control gallery node
+                - publishes to visual_servo/twist
+                - todo service
+        -->
+        <node name="control_gallery_node" pkg="h_vs" type="control_gallery_node.py" output="screen">
+                <param name="repeat" type="bool" value="$(arg repeat)"/>
+        </node>
+
+        <!-- launch homography generation node
+                - subscribes to camera/image_raw
+                - publishes to visual_servo/G 
+                - todo service, same for endoscopy
+        -->
+        <node name="h_gen_endoscopy_stored_views_node" pkg="h_vs" type="h_gen_endoscopy_stored_views_node.py" output="screen">
+            <param name="cname" type="str" value="$(arg cname)"/>
+            <param name="url" type="str" value="$(arg url)"/>
+            <param name="sim" type="bool" value="$(arg sim)"/>
+
+            <remap from="camera/image_raw" to="$(arg image_topic)"/>
+        </node>
+
+        <!-- launch homography based visual servo node
+                - subscribes to visual_servo/G 
+                - publishes to visual_servo/twist
+        -->
+        <node name="h_vs_node" pkg="h_vs" type="h_vs_node" output="screen">
+            <param name="cname" type="str" value="$(arg cname)"/>
+            <param name="url" type="str" value="$(arg url)"/>
+        </node>
+
+        <!-- launch action client node 
+                - subscribes to visual_servo/twist, rcm/p_trocar
+                - requests rcm goals from action server under action_server: 'h_rcm_vs/RCM_ActionServer', defined in config/rcm_params.yml
+        -->
+        <node name="h_rcm_vs_client_node" pkg="h_rcm_vs" type="h_rcm_vs_client_node" output="screen"/>
+    </group>
+
+</launch>
+
