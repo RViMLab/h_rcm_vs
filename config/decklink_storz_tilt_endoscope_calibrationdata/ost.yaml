@@ -1,0 +1,26 @@
+image_width: 1000
+image_height: 1000
+camera_name: decklink
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [1023.50924,    0.     ,  503.74181,
+            0.     , 1030.38833,  519.4566 ,
+            0.     ,    0.     ,    1.     ]
+distortion_model: plumb_bob  # by default camera_model -> change to distortion_model
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.555590, 0.146052, 0.007004, -0.001259, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [840.5144 ,   0.     , 503.38259,   0.     ,
+           0.     , 842.98529, 542.47834,   0.     ,
+           0.     ,   0.     ,   1.     ,   0.     ]

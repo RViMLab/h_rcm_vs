@@ -3,19 +3,19 @@ control_client: 'PositionJointInterface_trajectory_controller/follow_joint_traje
 planning_group: 'arm_tilt_endoscope'
 
 # task and remote center of motion gains - proportional, integral, differential
-kpt: [0.5,1.,1.,1.]
+kpt: [1.,4.,4.,4.]
 kit: [0.,0.,0.,0.]
 kdt: [0.,0.,0.,0.]
-kprcm: [100, 100, 100]
+kprcm: [60, 60, 60]
 kircm: [0., 0., 0.]
 kdrcm: [0., 0., 0.]
-lambda0: 1.0  # initialize at 1.0 for manual insertion
+lambda0: 1.  # initialize at 1.0 for manual insertion
 
 # control interval, in velocity control: rate at which rcom goals are sent, else: sets interval to execute incremental motion
-dt: 0.02
+dt: 0.01
 
 # velocity scaling
-alpha: 0.5
+alpha: 0.2
 
 # link names
 link_pi: 'storz_tilt_endoscope_link_1'
