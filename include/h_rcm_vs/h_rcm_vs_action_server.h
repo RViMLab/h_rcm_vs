@@ -64,9 +64,10 @@ Eigen::MatrixXd HRCMVSActionServer::_computeTaskJacobian(moveit::core::RobotStat
     );
 
     // Rotate task from world frame to camera frame
-    Eigen::MatrixXd R(6, 6);
-    R << robot_state->getGlobalLinkTransform(_link_pip1).rotation().inverse(), Eigen::Matrix3d::Zero(),
-        Eigen::Matrix3d::Zero(), robot_state->getGlobalLinkTransform(_link_pip1).rotation().inverse();
+    Eigen::MatrixXd A(6, 6);
+    auto H = robot_state->getGlobalLinkTransform(_link_pip1).inverse();
+    A << H.rotation(), Eigen::Matrix3d::Zero(),
+        Eigen::Matrix3d::Zero(), H.rotation();
 
     Eigen::MatrixXd proj = Eigen::MatrixXd::Zero(4, 6);
     // proj.topLeftCorner(3, 3) = Eigen::Matrix3d::Identity();
@@ -74,7 +75,7 @@ Eigen::MatrixXd HRCMVSActionServer::_computeTaskJacobian(moveit::core::RobotStat
     proj.bottomRightCorner(3, 3) = Eigen::Matrix3d::Identity();
     proj(0, 2) = 1.;
 
-    return proj*R*Jt;
+    return proj*A*Jt;
 };
 
 
